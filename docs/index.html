@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-svg-annotation@2.5.1/d3-annotation.min.js"></script>
+
+<!-- Load color scale -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>General Stores</title>
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-size: 20px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-rendering: optimizeLegibility;
+        }
+
+        .content {
+            max-width: 640px;
+            margin: auto;
+        }
+
+        .header {
+            padding: 3em 0;
+        }
+
+        a {
+            color: #f05349;
+        }
+
+        .footer {
+            background: #f4f4f4;
+            text-align: center;
+            font-size: 0.8em;
+            margin-top: 4em;
+            padding: 4em 0;
+        }
+
+        figure {
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        figcaption {
+            font-size: 0.8em;
+            text-align: center;
+            margin-top: 0.5em;
+            color: #666;
+        }
+
+        h1 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: bold;
+            font-size: 3em;
+            line-height: 1.1;
+        }
+
+        .subhead {
+            font-family: 'Lora', Georgia, serif;
+        }
+
+        iframe,
+        img,
+        video {
+            max-width: 100%;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 0;
+            padding-bottom: 1.2em;
+        }
+
+        ul {
+            margin: 0;
+            padding-bottom: 1em;
+            line-height: 1.6;
+        }
+
+        iframe {
+            padding-bottom: 1.2em;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            background: #fff880;
+        }
+
+        .full-width figure {
+            text-align: center;
+        }
+
+        /* margin on mobile */
+        @media (max-width: 640px) {
+            body {
+                font-size: 18px;
+            }
+
+            .content {
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+            }
+        }
+        /* For the active stores chart tooltip */
+
+        #active_stores_chart {
+            position: relative;
+            text-align: left;
+            width: fit-content;
+            margin: 0 auto;
+        }
+            
+        /* For the hover. Change stroke color of circle on hover (white -> black) --> */
+        /* .bubbles {
+        stroke-width: 2px;
+        stroke: white;
+        }
+        .bubbles:hover {
+        stroke: black;
+        } */
+
+
+    </style>
+
+</head>
+
+
+<body>
+    <div class="content">
+        <div class="header">
+            <h1>Lost Gathering Places</h1>
+            <p class="subhead">How Vermont is losing its general stores.</p>
+        </div>
+        <div class="byline">
+            <p>By <a href="https://github.com/AbigailMihaly">Abigail Mihaly</a></p>
+        </div>
+    </div>
+    <div class="content">
+        <figure>
+            <img src="cutest-store-icon.png">
+        </figure>
+    </div>
+    <div class="content">
+        <p>Vermont is made up of hundreds of small towns, often a few thousand people or less.
+            My parents' village of East Calais boasts a Post Office, a church, and a General Store.
+            Everything else in “downtown” — the intersection of Route 14 and Moscow Woods Road — is residential.</p>
+        <p>In a town that small, one type of store won’t do.
+            People need somewhere to buy both a cup of coffee and a stick of butter.</p>
+        <p>In Vermont, those are General Stores. General Stores are bigger than convenience stores,
+            or corner stores.
+            They’re one part grocery store, one part cafe, one part hardware store.</p>
+        <p>One expert — Ben Doyle runs Vermont’s Historic Preservation Trust,
+            which funds community projects, including helping struggling town stores —
+            said a good general store is more than a convenience store.</p>
+        <p>“If you can buy a pound of nails, its a general store,” Doyle said.</p>
+
+        <p>These stores also provide pride of place.</p>
+        <p>“I’m amazed at how many times we work with a general store where [the owners] will say, well you know, ‘this is the oldest general store in the state of Vermont,’” Doyle said,
+            laughing about different “qualifiers” they’ll use, like “this building is older,” or “this is the longest continuaously operat[ing]” store.”</p>
+        <p>“The point is that they all want to be the oldest which says to me that [the importance of a general store is something about place. Authenticity, and rootedness [and] pride of place.
+            Doyle argues general stores are gathering places that breed “accidental encounters” that in turn build local community.</p>
+
+        <p>But the retail landscape is changing.</p>
+        <p>Chain stores from Walmart to Hanford's to Dollar General are have popped up across the state,
+            offering cheaper prices than general stores can manage.
+            Distributors supplying those big box stores wont sell to a company as small as a general store, Doyle says.
+            In one expression of that challenge, Doyle says operators sometimes drive to Hannaford
+            and other chain retailers to buy groceries to bring back and sell at their own stores.</p>
+        <p>With margins slim, general stores are also often saddled with deferred maintenance costs.
+            Doyle says many young people may be less interested in staying in Vermont to run their family’s general store than past generations,
+            requiring families to look for new ownership. But selling to a new owner triggers renovations to meet new health and safety and fire codes.
+            That can sometimes be prohibitive.</p>
+
+        <p>I set out to determine how many general stores have operated in Vermont over time.
+            I wanted to see: did those retail changes in the early aughts trigger a decline?</p>
+
+        <p>Vermont Business Services clearly showed an increase in the number of stores
+            filing paperwork closing their businesses. There are notably more reported
+            closures between 2005 and 2014.</p>
+        <p>One common big box store in Vermont is Dollar General. Their first store opened in 2006; now,
+            there are 44 locations throughout the state, according to a company spokesperson. 
+            It's worth noting that many stores likely did not submit formal closure paperwork with the state,
+            but assuming that the percent of stores filing their closure paperwork
+            remains mostly consistent over time, this trend would hold.</p>
+    </div>
+
+
+    <div class="full-width">
+            <figure>
+                <h3>More Stores Shuttered In The First Years After </h3>
+                <div id="ended_timeline_chart"></div>
+            </figure>
+    </div>
+
+    <div class="content">
+        <p>Meanwhile, fewer stores have opened in the last ten years than in prior decades. </p>
+
+    </div>
+
+    <div class="full-width">
+
+        <figure>
+            <h3>How Many Stores Were Incorporated over Time?</h3>
+             <!-- <div id="tooltip_incorporatedtimeline" style="position: absolute; opacity: 0; background: white; border: 1px solid #333; padding: 5px 10px; border-radius: 4px; pointer-events: none;"></div> -->
+            <div id="incorporated_timeline_chart"></div>
+        </figure>
+    </div>
+
+    <div class="content">
+
+        <p>The dataset I worked with for this project is too limited to draw publishable
+            conclusion about this finding. Still, this analysis instead serves as a preliminary
+            look at what these trends look like, with the potential for future reporting including
+            data from other sources.</p>
+
+    </div>
+
+    <div class="full-width">
+
+        <figure>
+
+            <h3>Business Registrations For General Stores Have Decreased Since The Early Aughts </h3>
+            <p>Here are the number of General Stores With Active Registration Since 1980</p>
+            
+            <!-- Create a div where the graph will take place -->
+            <div id="active_stores_chart"> </div>
+
+        </figure>
+
+    </div>
+
+    <div class="footer">
+        <div class="content">
+            <p>This project uses bulk company data from Vermont’s Business Services Division, available at bizfilings.govermont.gov/bulk-download to signed-in users.
+                For more information about my analysis, please visit the github project page <a href="TK LINK">here</a>.
+        </div>
+    </div>
+
+<!-- SCRIPTS -->
+
+        <script>
+
+            // set the dimensions and margins of the graph
+            var margin_activestores = {top: 50, right: 40, bottom: 70, left: 40},
+            width_activestores = 800 - margin_activestores.left - margin_activestores.right,
+            height_activestores = 400 - margin_activestores.top - margin_activestores.bottom;
+
+            // append the svg object to the body of the page
+            var svg_activestores = d3.select("#active_stores_chart")
+                .append("svg")
+                .attr("width", width_activestores + margin_activestores.left + margin_activestores.right)
+                .attr("height", height_activestores + margin_activestores.top + margin_activestores.bottom)
+                .append("g")
+                .attr("transform",
+                "translate(" + margin_activestores.left + "," + margin_activestores.top + ")");
+
+            // Parse the Data
+            d3.csv("stores_active_by_year_after1990.csv", function(active_stores_data) {
+
+            // defining my tooltip
+            // Add a tooltip div.
+            // First define general feature of the tooltip: stuff that do not depend on the data point.
+            // Its opacity is set to 0: we don't see it by default.
+            var tooltip = d3.select("#active_stores_chart")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("pointer-events", "none")
+                .style("background-color", "grey")
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .style("color", "white")
+                .style("border-radius", "5px")
+                .style("padding", "10px")
+                .style("transform", "translateX(-50%)");
+
+            // A function that change this tooltip when the user hover a point.
+            var showTooltip = function(d) {
+                tooltip
+                    .transition()
+                    .duration(100)
+                    .style("opacity", 0.9)
+                tooltip
+                    .html("Year: " + d.year + "<br>Active Stores: " + d.active_stores)
+                    .style("left", (margin_activestores.left + x(d.year) + x.bandwidth() / 2) + "px")
+                    .style("top", (margin_activestores.top + y(d.active_stores) - 80) + "px");
+                }
+
+            // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+            var hideTooltip = function(d) {
+                tooltip
+                    .transition()
+                    .duration(100)
+                    .style("opacity", 0)
+                }
+                
+            // X axis
+            var x = d3.scaleBand()
+                    .range([ 0, width_activestores ])
+                    .domain(active_stores_data.map(function(d) { return d.year; }))
+                    .padding(0.2);
+                svg_activestores.append("g")
+                    .attr("transform", "translate(0," + height_activestores + ")")
+                    .call(d3.axisBottom(x))
+                    .selectAll("text")
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                    .style("text-anchor", "end");
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([0, 290])
+                .range([ height_activestores, 0]);
+            svg_activestores.append("g")
+                .call(d3.axisLeft(y))
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+
+            // Bars
+            svg_activestores.selectAll("mybar")
+                .data(active_stores_data)
+                .enter()
+                .append("rect")
+                .attr("x", function(d) { return x(d.year); })
+                .attr("y", function(d) { return y(d.active_stores); })
+                .attr("width", x.bandwidth())
+                .attr("height", function(d) { return height_activestores - y(d.active_stores); })
+                .attr("fill", "#c64259")
+            // for the mouseover function:
+                .on("mouseover", showTooltip)
+                .on("mouseleave", hideTooltip);
+
+
+            // ANNOTATION - label with Dollar General information //
+
+            const annotation = [
+                {
+                    note: {
+                    label: "",
+                    title: "2006: 1st Dollar General opens in Vermont",
+                    wrap: 300
+                    },
+                    connector: {
+                    end: "arrow",        // none, or arrow or dot
+                    type: "curve",       // Line or curve
+                    points: 3,           // Number of break in the curve
+                    lineType : "horizontal"
+                    },
+                    color: ["c64259"],
+                    x: 330,
+                    y: 10,
+                    dy: 0,
+                    dx: 180
+                }
+                ];
+
+            // Add annotation to the chart - label with Dollar General information //
+            const makeAnnotation = d3.annotation()
+                .annotations(annotation)
+
+            svg_activestores.append("g")
+                .attr("class", "annotation-group")
+                .call(makeAnnotation)
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .style("font-size", "15px");
+
+            // draw arrow to chart
+            svg_activestores.selectAll(".connector")
+                .attr('stroke', "black")
+                .style("stroke-dasharray", ("3, 3"))
+            svg_activestores.selectAll(".connector-end")
+                .attr('stroke', "black")
+                .attr('fill', "black")
+
+                        
+            });
+
+        </script>
+        
+        <!-- BAR CHART WITH SVGs FOR THE DISSOLVED/TERMINATED BY DATES INFO  -->
+
+        <script>
+
+            // set dimensions and margins
+            var margin_ended = {top: 10, right: 20, bottom: 80, left: 20},
+                width_ended = 600 - margin_ended.left - margin_ended.right,
+                height_ended = 690 - margin_ended.top - margin_ended.bottom;
+
+            // append the svg object to page body
+            var svg_ended = d3.select("#ended_timeline_chart")
+            .append("svg")
+                .attr("width", width_ended + margin_ended.left + margin_ended.right)
+                .attr("height", height_ended + margin_ended.top + margin_ended.bottom)
+            .append("g")
+                .attr("transform",
+                    "translate(" + margin_ended.left + "," + margin_ended.top + ")");
+
+            // Icon used for each unit in the stack — swap the shapes inside
+            // this symbol for a different icon, or replace with an <image> tag
+            // pointing at a PNG (keep the viewBox the same).
+            svg_ended.append("defs")
+                .append("symbol")
+                .attr("id", "yellow-store-icon")
+                .attr("viewBox", "0 0 40 40")
+                .append("image")
+                .attr("href", "yellow-store-icon.png")
+                .attr("width", 40)
+                .attr("height", 40);
+
+            // Parse the Data
+            d3.csv("dissolved_terminated_by_halfdecade.csv", function(ended_data) {
+
+
+            // manually sorting so that it only shows 1985-2025
+            ended_data = ended_data.filter(function(d) {
+                var startYear = parseInt(d.years.trim().split('-')[0], 10);
+                return startYear >= 1980 && startYear < 2025;
+            });
+
+
+            // X axis
+            var x = d3.scaleBand()
+                .range([ 0, width_ended ])
+                .domain(ended_data.map(function(d) { return d.years; }))
+                .padding(.2);
+            svg_ended.append("g")
+                .attr("transform", "translate(0," + height_ended + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,16)rotate(-45)")
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .style("font-size", "14px");
+
+            // no y axis
+            // the icon count communicates the value directly
+            var maxCount = d3.max(ended_data, function(d) { return + d.count; });
+            var gap = 2;
+            var colGap = 2;
+            var iconUnit = height_ended / maxCount;
+            var iconSize = 50;
+
+            // Create icon stacks (like bars in a bar graph)
+            var barGroups = svg_ended.selectAll(".bar-group")
+                .data(ended_data)
+                .enter()
+                .append("g")
+                .attr("class", "bar-group")
+                .attr("transform", function(d) { return "translate(" + x(d.years) + ",0)"; });
+
+            barGroups.each(function(d) {
+                var count = +d.count;
+                var cx = x.bandwidth() / 2 - iconSize / 2;
+                d3.select(this).selectAll(".icon")
+                    .data(d3.range(count))
+                    .enter()
+                    .append("use")
+                    .attr("class", "icon")
+                    .attr("href", "#yellow-store-icon")
+                    .attr("width", iconSize)
+                    .attr("height", iconSize)
+                    .attr("x", cx)
+                    .attr("y", function(di) { return height_ended - (di + 1) * (iconSize + gap) + gap; })
+        
+        })
+        
+            barGroups.append("text")
+                .attr("class", "count-label")
+                .attr("x", x.bandwidth() / 2)
+                .attr("y", function(d) {
+                    var count = +d.count;
+                    return height_ended - count * (iconSize + gap) - 8;
+                })
+                .attr("text-anchor", "middle")
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .style("font-size", "12px")
+                .text(function(d) { return d.count; });
+
+        // make a legend
+
+            var legend = svg_ended.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(0, -15)");
+
+            legend.append("image")
+                .attr("href", "yellow-store-icon.png")
+                .attr("width", 30)
+                .attr("height", 30)
+                .attr("x", 5)
+                .attr("y", 5);
+
+            legend.append("text")
+                .attr("x", 39)
+                .attr("y", 26)
+                .style("font-size", "12px")
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .text("= 1 store closed");
+
+    });
+
+        </script>
+
+<!-- CHART FOR INCORPORATED DATES -->
+        <script>
+
+            // set dimensions and margins
+            var margin_incorporated = {top: 30, right: 20, bottom: 80, left: 20},
+                width_incorporated = 600 - margin_incorporated.left - margin_incorporated.right,
+                height_incorporated = 700 - margin_incorporated.top - margin_incorporated.bottom;
+
+            // append the svg object to page body
+            var svg_incorporated = d3.select("#incorporated_timeline_chart")
+            .append("svg")
+                .attr("width", width_incorporated + margin_incorporated.left + margin_incorporated.right)
+                .attr("height", height_incorporated + margin_incorporated.top + margin_incorporated.bottom)
+            .append("g")
+                .attr("transform",
+                    "translate(" + margin_incorporated.left + "," + margin_incorporated.top + ")");
+
+            // Icon used for each unit in the stack — swap the shapes inside
+            // this symbol for a different icon, or replace with an <image> tag
+            // pointing at a PNG (keep the viewBox the same).
+            svg_incorporated.append("defs")
+                .append("symbol")
+                .attr("id", "store-icon")
+                .attr("viewBox", "0 0 40 40")
+                .append("image")
+                .attr("href", "store-icon.png")
+                .attr("width", 40)
+                .attr("height", 40);
+
+            // Parse the Data
+            d3.csv("incorporation_by_halfdecade.csv", function(incorporated_data) {
+
+
+            // manually sorting so that it only shows 1985-2025
+            incorporated_data = incorporated_data.filter(function(d) {
+                var startYear = parseInt(d.years.trim().split('-')[0], 10);
+                return startYear >= 1985 && startYear < 2025;
+            });
+
+            // X axis
+            var x = d3.scaleBand()
+                .range([ 0, width_incorporated ])
+                .domain(incorporated_data.map(function(d) { return d.years; }))
+                .padding(.2);
+            svg_incorporated.append("g")
+                .attr("transform", "translate(0," + height_incorporated + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,16)rotate(-45)")
+                .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+                .style("font-size", "14px");
+
+            // no y axis
+            // the icon count communicates the value directly
+            var maxCount = d3.max(incorporated_data, function(d) { return + d.count / 15; });
+            var gap = 2;
+            var iconUnit = height_incorporated / maxCount;
+            var iconSize = Math.min(x.bandwidth(), iconUnit - gap);
+
+            // Create icon stacks (like bars in a bar graph)
+            var barGroups = svg_incorporated.selectAll(".bar-group")
+                .data(incorporated_data)
+                .enter()
+                .append("g")
+                .attr("class", "bar-group")
+                .attr("transform", function(d) { return "translate(" + x(d.years) + ",0)"; });
+
+
+    barGroups.each(function(d) {
+        var rawCount = +d.count / 15;
+        var fullCount = Math.floor(rawCount);
+        var remainder = rawCount - fullCount; // fraction between 0 and 1
+        var cx = x.bandwidth() / 2 - iconSize / 2;
+
+        // One array describing every icon in the stack — full ones, plus one partial if needed
+        var icons = d3.range(fullCount).map(function(i) {
+            return { index: i, fraction: 1 };
+        });
+        if (remainder > 0.01) {
+            icons.push({ index: fullCount, fraction: remainder });
+        }
+
+        var group = d3.select(this);
+
+        var iconGroups = group.selectAll(".icon")
+            .data(icons)
+            .enter()
+            .append("g")
+            .attr("class", "icon");
+
+        iconGroups.each(function(iconD) {
+            var g = d3.select(this);
+            var clipId = "clip-" + d.years.replace(/[^a-zA-Z0-9]/g, "") + "-" + iconD.index;
+
+            if (iconD.fraction < 1) {
+                g.append("clipPath")
+                    .attr("id", clipId)
+                    .attr("clipPathUnits", "objectBoundingBox")
+                    .append("rect")
+                    .attr("x", 0)
+                    .attr("y", 1 - iconD.fraction)
+                    .attr("width", 1)
+                    .attr("height", iconD.fraction);
+            }
+
+            g.append("use")
+                .attr("href", "#store-icon")
+                .attr("width", iconSize)
+                .attr("height", iconSize)
+                .attr("x", cx)
+                .attr("y", height_ended - (iconD.index + 1) * (iconSize + gap) + gap)
+                .attr("clip-path", iconD.fraction < 1 ? "url(#" + clipId + ")" : null);
+        });
+    });
+        
+    // make labels above each of the bars with the count on them 
+
+    barGroups.append("text")
+        .attr("class", "count-label")
+        .attr("x", x.bandwidth() / 2)
+        .attr("y", function(d) {
+            var count = +d.count / 15;
+            var iconTopY = height_ended - count * (iconSize + gap) + gap;
+            return iconTopY - 28;
+            })
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+        .text(function(d) { return d.count; });
+
+        // make a legend
+
+    var legend = svg_incorporated.append("g")
+        .attr("class", "legend")
+        .attr("transform", "translate(0, -15)");
+
+    legend.append("image")
+        .attr("href", "store-icon.png")
+        .attr("width", 30)
+        .attr("height", 30)
+        .attr("x", 415)
+        .attr("y", 5);
+
+    legend.append("text")
+        .attr("x", 450)
+        .attr("y", 26)
+        .style("font-size", "12px")
+        .style("font-family", "'Source Sans Pro', Helvetica, Arial, sans-serif")
+        .text("= 15 stores incorporated");
+
+    });
+
+        </script>
+
+        <!-- BUBBLE CHART FOR THE DISSOLVED/TERMINATED BY DATES INFO  -->
+<!-- 
+        <script>
+
+                // set the dimensions and margins of the graph
+                var margin_endedtimeline = {top: 10, right: 20, bottom: 100, left: 50},
+                    width_endedtimeline = 700 - margin_endedtimeline.left - margin_endedtimeline.right,
+                    height_endedtimeline = 200 - margin_endedtimeline.top - margin_endedtimeline.bottom;
+
+                // append the svg object to the body of the page
+                var svg_endedtimeline = d3.select("#ended_timeline_chart")
+                .append("svg")
+                    .attr("width", width_endedtimeline + margin_endedtimeline.left + margin_endedtimeline.right)
+                    .attr("height", height_endedtimeline + margin_endedtimeline.top + margin_endedtimeline.bottom)
+                .append("g")
+                    .attr("transform",
+                        "translate(" + margin_endedtimeline.left + "," + margin_endedtimeline.top + ")");
+
+                //Read the data
+                d3.csv("dissolved_terminated_by_halfdecade.csv", function(dissolved_terminated_data) {
+
+                // Sort the date-range strings chronologically by their start year
+                var sortedRanges = dissolved_terminated_data
+                    .map(function(d) { return d.years.trim(); }) 
+                    .filter(function(v, i, arr) { return arr.indexOf(v) === i; }) // dedupe
+                    .sort(function(a, b) {
+                        var startA = parseInt(a.split(' - ')[0], 10);
+                        var startB = parseInt(b.split(' - ')[0], 10);
+                        return startA - startB;
+                    });
+
+                // Add X axis
+                var x = d3.scaleBand()
+                    .domain(sortedRanges)
+                    .range([ 0, width_endedtimeline ])
+                
+                var xAxis_endedtimeline = d3.axisBottom(x)
+                    .tickSize(25)
+                    .tickPadding(10);
+
+                svg_endedtimeline.append("g")
+                    .attr("transform", "translate(0," + height_endedtimeline + ")")                   
+                    .call(xAxis_endedtimeline)
+                    .selectAll("text")
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+                // Add a scale for bubble size
+                var z = d3.scaleLinear()
+                    .domain([0, 30])
+                    .range([0, 60]);
+
+                // // Add dots
+                // svg_endedtimeline.append('g')
+                //     .selectAll("dot")
+                //     .data(dissolved_terminated_data)
+                //     .enter()
+                //     .append("circle")
+                //     .attr("cx", function (d) { return x(d.year.trim()) + x.bandwidth() / 2; })
+                //     .attr("cy", height_endedtimeline)
+                //     .attr("r", function (d) { return z(d.count); } )
+                //     .style("fill", "#228B22")
+                //     .style("opacity", "0.7")
+                //     .attr("stroke", "white")
+
+                    // FOR THE HOVER:
+                    // create tooltip
+                    var tooltip = d3.select("#tooltip_endedtimeline");
+                    
+                    // Create functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+                    var showTooltip = function(d) {
+                        tooltip
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 1)
+                        .html("Stores shuttered: " + d.count)
+                        .style("left", (d3.mouse(this)[0]+30) + "px")
+                        .style("top", (d3.mouse(this)[1]+30) + "px")
+                    }
+
+                    var moveTooltip = function(d) {
+                        tooltip
+                        .style("left", (d3.mouse(this)[0]+30) + "px")
+                        .style("top", (d3.mouse(this)[1]+30) + "px")
+                    }
+
+                    var hideTooltip = function(d) {
+                        tooltip
+                        .transition()
+                        .duration(200)
+                        .style("opacity", 0)
+                    }
+
+                    // Add dots
+                    svg_endedtimeline.append('g')
+                        .selectAll("dot")
+                        .data(dissolved_terminated_data)
+                        .enter()
+                        .append("circle")
+                        .attr("class", "bubbles")
+                        .attr("cx", function (d) { return x(d.years.trim()) + x.bandwidth() / 2; })
+                        .attr("cy", height_endedtimeline)
+                        .attr("r", function (d) { return z(d.count); } )
+                        .style("fill", "#228B22")
+                        .style("opacity", ".2")
+
+                        // -3- Trigger the functions
+                        .on("mouseover", showTooltip )
+                        .on("mousemove", moveTooltip )
+                        .on("mouseleave", hideTooltip )
+
+                })
+
+        </script> -->
+
+        <!-- BUBBLE CHART FOR THE INCORPORATED DATES  -->
+<!-- 
+        <script>
+
+                // set the dimensions and margins of the graph
+                var margin_incorporatedtimeline = {top: 10, right: 20, bottom: 100, left: 50},
+                    width_incorporatedtimeline = 700 - margin_incorporatedtimeline.left - margin_incorporatedtimeline.right,
+                    height_incorporatedtimeline = 200 - margin_incorporatedtimeline.top - margin_incorporatedtimeline.bottom;
+
+                // append the svg object to the body of the page
+                var svg_incorporatedtimeline = d3.select("#incorporated_timeline_chart")
+                    .append("svg")
+                        .attr("width", width_incorporatedtimeline + margin_incorporatedtimeline.left + margin_incorporatedtimeline.right)
+                        .attr("height", height_endedtimeline + margin_incorporatedtimeline.top + margin_incorporatedtimeline.bottom)
+                    .append("g")
+                        .attr("transform",
+                            "translate(" + margin_incorporatedtimeline.left + "," + margin_incorporatedtimeline.top + ")");
+
+                //Read the data
+                d3.csv("incorporation_by_halfdecade.csv", function(incorporated_data) {
+
+                // manually sorting so that it only shows 1985-2025
+                incorporated_data = incorporated_data.filter(function(d) {
+                    var startYear = parseInt(d.years.trim().split('-')[0], 10);
+                    return startYear >= 1985 && startYear < 2020;
+                });
+
+                // Sort the date-range strings chronologically by their start year
+                var sortedRanges = incorporated_data
+                    .map(function(d) { return d.years.trim(); }) 
+                    .filter(function(v, i, arr) { return arr.indexOf(v) === i; }) // dedupe
+                    .sort(function(a, b) {
+                        var startA = parseInt(a.split(' - ')[0], 10);
+                        var startB = parseInt(b.split(' - ')[0], 10);
+                        return startA - startB;
+                    });
+
+                // Add X axis
+                var x = d3.scaleBand()
+                    .domain(sortedRanges)
+                    .range([ 0, width_endedtimeline ])
+                
+                var xAxis_incorporatedtimeline = d3.axisBottom(x)
+                    .tickSize(25)
+                    .tickPadding(10);
+
+                svg_incorporatedtimeline.append("g")
+                    .attr("transform", "translate(0," + height_endedtimeline + ")")                   
+                    .call(xAxis_incorporatedtimeline)
+                    .selectAll("text")
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+                // Add a scale for bubble size
+                var z = d3.scaleLinear()
+                    .domain([0, 1000])
+                    .range([0, 300]);
+
+                // // Add dots
+                // svg_incorporatedtimeline.append('g')
+                //     .selectAll("dot")
+                //     .data(incorporated_data)
+                //     .enter()
+                //     .append("circle")
+                //     .attr("cx", function (d) { return x(d.years.trim()) + x.bandwidth() / 2; })
+                //     .attr("cy", height_endedtimeline)
+                //     .attr("r", function (d) { return z(d.count); } )
+                //     .style("fill", "#228B22")
+                //     .style("opacity", "0.7")
+                //     .attr("stroke", "white")
+
+                // FOR THE HOVER:
+                // create tooltip
+                var tooltip = d3.select("#tooltip_incorporatedtimeline");
+                    
+                // Create functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+                var showTooltip = function(d) {
+                    tooltip
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1)
+                    .html("Stores shuttered: " + d.count)
+                    .style("left", (d3.mouse(this)[0]+30) + "px")
+                    .style("top", (d3.mouse(this)[1]+30) + "px")
+                }
+
+                var moveTooltip = function(d) {
+                    tooltip
+                    .style("left", (d3.mouse(this)[0]+30) + "px")
+                    .style("top", (d3.mouse(this)[1]+30) + "px")
+                }
+
+                var hideTooltip = function(d) {
+                    tooltip
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 0)
+                }
+
+                // Add dots
+                svg_incorporatedtimeline.append('g')
+                    .selectAll("dot")
+                    .data(incorporated_data)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "bubbles")
+                    .attr("cx", function (d) { return x(d.years.trim()) + x.bandwidth() / 2; })
+                    .attr("cy", height_endedtimeline)
+                    .attr("r", function (d) { return z(d.count); })
+                    .style("fill", "#228B22")
+                    .style("opacity", ".1")
+
+                    // -3- Trigger the functions
+                    .on("mouseover", showTooltip)
+                    .on("mousemove", moveTooltip)
+                    .on("mouseleave", hideTooltip)
+
+                })
+
+        </script> -->
+
+</body>
+
+</html>
