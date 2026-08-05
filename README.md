@@ -54,3 +54,5 @@ I am also choosing to trim this data beginning in 1980 or 85 depending on the vi
 
 .html page constructed using [J Soma's stack template](https://github.com/jsoma/page-templates/tree/main).
 D3 visualizations constructed from a base of charts found at [d3-graph-gallery](https://d3-graph-gallery.com/graph/barplot_ordered.html).
+
+To create the map, I geocoded each town name and mapped with datawrapper. I then created a gif with canva.
