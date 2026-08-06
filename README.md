@@ -9,8 +9,6 @@ I analyzed bulk company data from Vermont’s Business Services Division. Bizfil
 
 I also used [data](https://geodata.vermont.gov/datasets/VCGI::vt-data-town-boundaries-1/about) from from Vermont's Center for Geographic Information to create a list of Vermont towns to use in my sorting of General Stores, detailed below.
 
-Summary:Depict Vermont's village, town, county, RPC, administrative, and state boundary lines.
-
 I analyzed three aspects of this data: how many stores were active in the state in each year, how many stores closed over time, and how many stores opened over time. I encountered significant challenges with this data, detailed below.
 
 ## Jupyter Notebooks
